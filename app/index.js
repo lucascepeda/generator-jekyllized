@@ -163,7 +163,10 @@ var JekyllizedGenerator = yeoman.generators.Base.extend({
                 name: 'Rsync',
                 value: 'rsync',
             }, {
-                name: 'Neither',
+                name: 'Github Pages',
+                value: 'githubPages'
+            }, {
+                name: 'None',
                 value: 'noUpload'
             }]
         }, {
@@ -210,6 +213,19 @@ var JekyllizedGenerator = yeoman.generators.Base.extend({
             when: function (answers) {
                 return answers.uploadChoices === 'rsync';
             }
+        }, {
+            name: 'githubDomain',
+            type: 'confirm',
+            message: '\n\nDo you want a custom domain for your Github Pages site?',
+            when: function (answers) {
+                return answers.uploadChoices === 'githubPages';
+            }
+        }, {
+            name: 'githubPagesCname',
+            message: 'What is the domain you want to host it on?' + chalk.red(' Only the bare domain, www.example.com and not http://www.example.com!'),
+            when: function (answers) {
+                return answers.uploadChoices.githubDomain === 'Yes'; 
+            }
         }];
        
         this.prompt(prompts, function (props) {
@@ -221,6 +237,7 @@ var JekyllizedGenerator = yeoman.generators.Base.extend({
 
             this.amazonCloudfrontS3 = hasFeature('amazonCloudfrontS3');
             this.rsync              = hasFeature('rsync');
+            this.githubPages        = hasFeature('githubPages');
             
             this.amazonKey      = props.amazonKey;
             this.amazonSecret   = props.amazonSecret;
@@ -230,6 +247,9 @@ var JekyllizedGenerator = yeoman.generators.Base.extend({
             this.rsyncUsername      = props.rsyncUsername;
             this.rsyncHostname      = props.rsyncHostname;
             this.rsyncDestination   = props.rsyncDestination;
+
+            this.githubDomain       = props.githubDomain;
+            this.githubPagesCname   = props.githubPagesCname;
 
             cb();
         }.bind(this));
@@ -255,6 +275,9 @@ var JekyllizedGenerator = yeoman.generators.Base.extend({
         }
         else if (this.rsync) {
             this.template('conditionals/_rsync-credentials.json', 'rsync-credentials.json');
+        }
+        else if (this.githubPages) {
+            this.template('conditionals/_CNAME', 'CNAME');
         }
     }
 });

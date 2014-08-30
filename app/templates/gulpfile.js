@@ -162,7 +162,11 @@ gulp.task('deploy', ['gzip'], function () {
             // Shows the progress on your files while uploading
             progress: true
     }));
-});<% } %>
+});<% } %><% if (githubPages) { %>
+// Task to host your site with Github Pages
+//
+
+<% } %>
 
 // Run JS Lint against your JS
 gulp.task('jslint', function () {

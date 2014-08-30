@@ -39,7 +39,10 @@ describe('Jekyllized generator test', function () {
             'src/robots.txt',
             'src/assets/favicon.ico',
             'src/assets/scss/style.scss',
-            'aws-credentials.json'
+            // 'aws-credentials.json',
+            // 'rsync-credentials.json',
+            'CNAME',
+            'src/assets/images/touch/apple-touch-icon-144-precomposed.png'
         ];
 
         helpers.mockPrompt(this.jekyllized, {
@@ -53,14 +56,16 @@ describe('Jekyllized generator test', function () {
             ownerTwitter: ['olanordmann123123'],
             jekyllPermalinks: ['pretty'],
             jekyllPaginate: ['10'],
-            uploadChoices: ['amazonCloudfrontS3'],
+            uploadChoices: ['githubPages'],
             amazonKey: ['123123123123123'],
             amazonSecret: ['14141414141414'],
             amazonBucket: ['135135135135135'],
             amazonDistID: ['2121212121212121'],
             rsyncUsername: ['olanordmann'],
             rsyncHostname: ['example.com'],
-            rsyncDestination: ['/srv/www/example.com/public_html']
+            rsyncDestination: ['/srv/www/example.com/public_html'],
+            githubDomain: ['Y'],
+            githubPagesCname: ['www.testing.com']
         });
 
         this.jekyllized.run({}, function () {
